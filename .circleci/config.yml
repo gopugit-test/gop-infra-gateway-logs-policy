@@ -1,0 +1,79 @@
+version: 2.1
+
+orbs:
+  terraform: circleci/terraform@3.2.1
+
+working_directory: &working_directory ~/gop-infra-gateway-logs-policy
+
+# fingerprint : &fingerprint ""
+                           
+workflows:
+  version: 2
+  build_test_deploy:
+    jobs:
+      - terraform/lint_terraform_recursive:
+          context: gop-aws-staging
+          name: lint_terraform_recursive
+          working_directory: *working_directory
+          tag: TERRAFORM_TAG_0_14_11
+      - terraform/plan:
+          context: gop-aws-staging
+          name: plan_staging
+          working_directory: *working_directory
+          fingerprint: *fingerprint
+          tag: TERRAFORM_TAG_0_14_11
+          requires:
+            - lint_terraform_recursive
+      - terraform/plan:
+          context: gop-aws-sandbox
+          name: plan_sandbox
+          working_directory: *working_directory
+          fingerprint: *fingerprint
+          tag: TERRAFORM_TAG_0_14_11
+          requires:
+            - lint_terraform_recursive
+      - terraform/plan:
+          context: aws-production
+          name: plan_production
+          working_directory: *working_directory
+          fingerprint: *fingerprint
+          tag: TERRAFORM_TAG_0_14_11
+          requires:
+            - lint_terraform_recursive
+      - terraform/apply:
+          context: gop-aws-staging
+          name: apply_staging
+          working_directory: *working_directory
+          fingerprint: *fingerprint
+          tag: TERRAFORM_TAG_0_14_11
+          requires:
+            - plan_staging
+            - plan_sandbox
+            - plan_production
+          filters:
+            branches:
+              only: master
+      - approve_sandbox:
+          type: approval
+          requires:
+            - apply_staging
+      - terraform/apply_with_approval:
+          context: gop-aws-sandbox
+          name: apply_with_approval_sandbox
+          working_directory: *working_directory
+          fingerprint: *fingerprint
+          tag: TERRAFORM_TAG_0_14_11
+          requires:
+            - approve_sandbox
+      - approve_production:
+          type: approval
+          requires:
+            - apply_with_approval_sandbox
+      - terraform/apply_with_approval:
+          context: gop-aws-production
+          name: apply_with_approval_production
+          working_directory: *working_directory
+          fingerprint: *fingerprint
+          tag: TERRAFORM_TAG_0_14_11
+          requires:
+            - approve_production
