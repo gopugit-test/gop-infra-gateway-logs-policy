@@ -1,1 +1,1 @@
-# gop-infra-gateway-logs-policy
+default/README.md
