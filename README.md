@@ -1,0 +1,1 @@
+# gop-infra-gateway-logs-policy
