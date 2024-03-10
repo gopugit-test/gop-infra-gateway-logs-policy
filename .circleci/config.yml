@@ -6,7 +6,8 @@ orbs:
 working_directory: &working_directory ~/gop-infra-gateway-logs-policy
 
 # fingerprint : &fingerprint ""
-                           
+   orbs:
+  linter: talkiq/linter@4.0.0                        
 workflows:
   version: 2
   build_test_deploy:
