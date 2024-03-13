@@ -1,8 +1,8 @@
 terraform {
   backend "s3" {
-    bucket  = "terraform-state-axiamed-production-us-west-2"
+    bucket  = "terraform-state-gop-production-us-west-2"
     region  = "us-west-2"
-    key     = "production-axiamed-gateway-logs-policy"
+    key     = "production-gop-gateway-logs-policy"
     profile = "production"
   }
 }

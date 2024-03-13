@@ -1,8 +1,8 @@
 terraform {
   backend "s3" {
-    bucket  = "terraform-state-axiamed-sandbox-us-west-2"
+    bucket  = "terraform-state-gop-sandbox-us-west-2"
     region  = "us-west-2"
-    key     = "sandbox-axiamed-gateway-logs-policy"
+    key     = "sandbox-gop-gateway-logs-policy"
     profile = "sandbox"
   }
 }
