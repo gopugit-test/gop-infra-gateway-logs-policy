@@ -4,7 +4,7 @@ config {
   force = false
 
   aws_credentials = {
-    aws_profile = "production"
+    aws_profile = "staging"
    }
   }
   rule "aws_instance_invalide_type" {
