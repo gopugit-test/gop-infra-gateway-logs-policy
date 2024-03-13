@@ -8,7 +8,7 @@ orbs:
    
  
 
-working_directory: &working_directory ~/gop-infra-gateway-logs-policy
+#working_directory: &working_directory ~/gop-infra-gateway-logs-policy
 
 # fingerprint : &fingerprint ""
   
@@ -20,7 +20,7 @@ workflows:
       - terraform/plan:
           context: gop-aws-staging
           name: plan_staging
-          working_directory: *working_directory
+         # working_directory: *working_directory
          # fingerprint: *fingerprint
           tag: TERRAFORM_TAG_0_14_11
           #requires:
@@ -28,7 +28,7 @@ workflows:
       - terraform/plan:
           context: gop-aws-sandbox
           name: plan_sandbox
-          working_directory: *working_directory
+          # working_directory: *working_directory
        #   fingerprint: *fingerprint
           tag: TERRAFORM_TAG_0_14_11
        #  requires:
@@ -36,7 +36,7 @@ workflows:
       - terraform/plan:
           context: aws-production
           name: plan_production
-          working_directory: *working_directory
+          # working_directory: *working_directory
         #  fingerprint: *fingerprint
           tag: TERRAFORM_TAG_0_14_11
           requires:
@@ -44,7 +44,7 @@ workflows:
       - terraform/apply:
           context: gop-aws-staging
           name: apply_staging
-          working_directory: *working_directory
+          # working_directory: *working_directory
         #  fingerprint: *fingerprint
           tag: TERRAFORM_TAG_0_14_11
           requires:
@@ -61,7 +61,7 @@ workflows:
       - terraform/apply_with_approval:
           context: gop-aws-sandbox
           name: apply_with_approval_sandbox
-          working_directory: *working_directory
+          #working_directory: *working_directory
       #    fingerprint: *fingerprint
           tag: TERRAFORM_TAG_0_14_11
           requires:
@@ -73,7 +73,7 @@ workflows:
       - terraform/apply_with_approval:
           context: gop-aws-production
           name: apply_with_approval_production
-          working_directory: *working_directory
+          #working_directory: *working_directory
         #  fingerprint: *fingerprint
           tag: TERRAFORM_TAG_0_14_11
           requires:
